@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">🌤️</div>
+                <div>
+                    <h1>Weather <span class="highlight">Dashboard</span></h1>
+                    <p class="subtitle">Real-time Weather Information</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="search-wrapper">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search for a city...">
+                    <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
+                </div>
+                
+                <button class="icon-btn" id="searchBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="refreshBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                </button>
+                <div class="unit-toggle-group">
+                    <button class="unit-btn active" id="unitCelsius">°C</button>
+                    <button class="unit-btn" id="unitFahrenheit">°F</button>
+                </div>
+                <button class="icon-btn" id="themeToggle">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Error Message -->
+        <div class="alert alert-error" id="errorMessage" style="display: none;"></div>
+
+        <!-- Success Message -->
+        <div class="alert alert-success" id="successMessage" style="display: none;"></div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading weather data...</p>
+        </div>
+
+        <!-- Current Weather Section -->
+        <section class="current-weather-section">
+            <div class="weather-hero">
+                <div class="weather-hero-content">
+                    <div class="location-info">
+                        <div class="location-badge">
+                            <span class="location-icon">📍</span>
+                            <span id="cityName">Select a City</span>
+                        </div>
+                        <div class="current-time" id="currentTime">--</div>
+                    </div>
+
+                    <div class="weather-main">
+                        <div class="weather-icon-container">
+                            <img src="" alt="Weather Icon" id="weatherIcon" class="weather-icon-img" style="display: none;">
+                        </div>
+                        
+                        <div class="temperature-container">
+                            <div class="temperature-main">
+                                <span class="temp-number" id="tempValue">--</span>
+                                <span class="temp-symbol" id="tempUnit">°C</span>
+                            </div>
+                            <div class="weather-description" id="weatherDescription">--</div>
+                            <div class="feels-like">Feels like <span id="feelsLike">--</span>°</div>
+                        </div>
+                    </div>
+
+                    <div class="weather-details">
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Wind Speed</div>
+                                <div class="detail-value"><span id="windSpeed">--</span> km/h</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Humidity</div>
+                                <div class="detail-value"><span id="humidity">--</span>%</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Pressure</div>
+                                <div class="detail-value"><span id="pressure">--</span> hPa</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Visibility</div>
+                                <div class="detail-value"><span id="visibility">--</span> km</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="update-info">
+                        <span>Last updated: <span id="lastUpdate">--</span></span>
+                        <span class="auto-update-badge">Auto-updates every 5 minutes</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5-Day Forecast Section -->
+        <section class="forecast-section">
+            <div class="section-header">
+                <h2 class="section-title"> 5-Day Forecast</h2>
+            </div>
+            <div class="forecast-container" id="forecastContainer"></div>
+        </section>
+
+        <!-- Favorite Cities Section -->
+        <section class="favorites-section">
+            <div class="section-header">
+                <h2 class="section-title"> Favorite Cities</h2>
+                <button class="btn-primary" id="saveFavoriteBtn">Save Current Location</button>
+            </div>
+            <div class="favorites-container" id="favoritesContainer"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Weather Dashboard © 2025 | Praktikum Pemrograman Web</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
