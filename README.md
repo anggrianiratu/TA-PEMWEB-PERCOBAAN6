@@ -28,3 +28,8 @@ serta menyesuaikan tema dan satuan suhu sesuai preferensi.
 * Dark/Light theme toggle
 * Refresh button for manual updates
 * Loading indicator
+
+### Author
+* Nama: Anggriani Luthfiyah Ratu
+* NPM: 2315061058
+* Mata Kuliah: Pemrograman Web
